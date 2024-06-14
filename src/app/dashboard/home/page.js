@@ -1,20 +1,4 @@
 import Link from "next/link";
-import {
-  Bell,
-  CircleUser,
-  Home,
-  LineChart,
-  Menu,
-  Package,
-  Package2,
-  Search,
-  ShoppingCart,
-  Users,
-  Folder,
-  Award,
-  Eye,
-} from "lucide-react";
-
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -23,16 +7,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 
@@ -41,6 +17,20 @@ export default function Dashboard() {
     <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
       <div className="flex items-center pb-5">
         <h1 className="text-2xl font-bold md:text-3xl">Welcome, Rupa</h1>
+      </div>
+      <div className="flex flex-col w-full items-center md:flex-row">
+        <Skeleton className="h-52 md:h-56 lg:h-64 aspect-square rounded-full my-5 md:mx-5 lg:mx-10"></Skeleton>
+        <Card className="w-full h-72">
+          <CardHeader>
+            <CardTitle>Background</CardTitle>
+            <CardDescription>
+              Choose a background for your portfolio
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div></div>
+          </CardContent>
+        </Card>
       </div>
       <div className="flex flex-col space-y-4 items-center justify-start">
         <Card className="w-full">
