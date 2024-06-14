@@ -16,10 +16,12 @@ export default function Dashboard() {
   return (
     <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
       <div className="flex items-center pb-5">
-        <h1 className="text-2xl font-bold md:text-3xl">Welcome, Rupa</h1>
+        <h1 className="text-2xl font-bold md:text-3xl">
+          Welcome, <span className="underline decoration-red-500">Rupa</span>
+        </h1>
       </div>
       <div className="flex flex-col w-full items-center md:flex-row">
-        <Skeleton className="h-52 md:h-56 lg:h-64 aspect-square rounded-full my-5 md:mx-5 lg:mx-10"></Skeleton>
+        <Skeleton className="h-52 md:h-56 lg:h-64 aspect-square rounded-full my-5 md:mx-5 lg:mx-10 outline outline-red-500 outline-3"></Skeleton>
         <Card className="w-full h-72">
           <CardHeader>
             <CardTitle>Background</CardTitle>
