@@ -17,14 +17,14 @@ export default function Dashboard() {
     <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
       <div className="flex items-center pb-5">
         <h1 className="text-2xl font-bold md:text-3xl">
-          Welcome, <span className="underline decoration-red-500">Rupa</span>
+          Welcome, <span className="text-red-500">Rupa</span>
         </h1>
       </div>
       <div className="flex flex-col w-full items-center md:flex-row">
         <Skeleton className="h-52 md:h-56 lg:h-64 aspect-square rounded-full my-5 md:mx-5 lg:mx-10 outline outline-red-500 outline-3"></Skeleton>
         <Card className="w-full h-72">
           <CardHeader>
-            <CardTitle>Background</CardTitle>
+            <CardTitle>Cover Image</CardTitle>
             <CardDescription>
               Choose a background for your portfolio
             </CardDescription>
@@ -37,7 +37,7 @@ export default function Dashboard() {
       <div className="flex flex-col space-y-4 items-center justify-start">
         <Card className="w-full">
           <CardHeader>
-            <CardTitle>About Me</CardTitle>
+            <CardTitle className="text-red-500">About Me</CardTitle>
             <CardDescription>
               Imagine you&apos;re introducing yourself at a networking event.
               What would you say?
@@ -70,7 +70,7 @@ export default function Dashboard() {
         </Card>
         <Card className="w-full">
           <CardHeader>
-            <CardTitle>Work Experience</CardTitle>
+            <CardTitle className="text-red-500">Work Experience</CardTitle>
             <CardDescription>
               Spill the beans. Tell us about your professional journey
             </CardDescription>
@@ -113,7 +113,7 @@ export default function Dashboard() {
         </Card>
         <Card className="w-full">
           <CardHeader>
-            <CardTitle>Contact Details</CardTitle>
+            <CardTitle className="text-red-500">Contact Details</CardTitle>
             <CardDescription>Let us know how to get in touch!</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -147,7 +147,7 @@ export default function Dashboard() {
             </div>
           </CardContent>
         </Card>
-        <Button>Update Profile</Button>
+        <Button className="bg-red-500">Update Profile</Button>
       </div>
     </main>
   );

@@ -43,7 +43,7 @@ export default function Dashboard() {
       <div className="flex flex-col space-y-4 items-center justify-start">
         <Card className="w-full">
           <CardHeader>
-            <CardTitle>Project Media</CardTitle>
+            <CardTitle className="text-red-500">Project Media</CardTitle>
             <CardDescription>
               Show us what you&apos;ve got! Upload a few images of your best
               projects.
@@ -53,7 +53,7 @@ export default function Dashboard() {
             <UploadProjectCard></UploadProjectCard>
           </CardContent>
         </Card>
-        <Button>Update Profile</Button>
+        <Button className="bg-red-500">Update Profile</Button>
       </div>
     </main>
   );
