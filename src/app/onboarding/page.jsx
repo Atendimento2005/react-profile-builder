@@ -20,6 +20,7 @@ export default async function Onboarding() {
     redirect("/login");
   }
 
+  console.log("Test");
   if (data.user.user_metadata.first_name && data.user.user_metadata.last_name) {
     redirect("/dashboard/home");
   }
