@@ -1,8 +1,18 @@
+"use client";
 import { Card, CardContent } from "@/components/ui/card";
 import { Upload } from "lucide-react";
+import { useDropzone } from "react-dropzone";
 export default function UploadProjectCard() {
+  const { inputFiles, getRootProps, getInputProps } = useDropzone({
+    accept: { "image/png": [], "image/jpeg": [] },
+  });
   return (
-    <Card className="max-w-xs aspect-video container bg-muted outline-dashed outline-muted-foreground">
+    <Card
+      {...getRootProps({
+        className:
+          "dropzone max-w-xs aspect-video container bg-muted outline-dashed outline-muted-foreground",
+      })}
+    >
       <CardContent className="h-full flex flex-col items-center justify-center">
         <Upload bg-cover className="text-muted-foreground text-xs" />
         <h2 className="mt-2 text-muted-foreground">Click here to upload</h2>
