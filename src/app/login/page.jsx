@@ -32,7 +32,11 @@ export default function Login() {
         } = res;
         if (user) {
           console.log("redirecting...");
-          router.push("/dashboard/home");
+          if (user.user_metadata.first_name && user.user_metadata.last_name) {
+            router.push("/dashboard/home");
+          } else {
+            router.push("/onboarding");
+          }
         }
       })
       .catch((err) => {

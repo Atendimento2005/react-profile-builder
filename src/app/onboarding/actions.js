@@ -23,3 +23,21 @@ export async function onboardUser(formData) {
     redirect("/dashboard/home");
   }
 }
+
+export async function checkUserInfo() {
+  const supabase = createClient();
+
+  return new Promise(async (resolve, reject) => {
+    const {
+      data: { user },
+      error,
+    } = await supabase.auth.getUser();
+
+    if (error) {
+      console.log(error);
+      reject(error);
+    }
+
+    resolve(user);
+  });
+}

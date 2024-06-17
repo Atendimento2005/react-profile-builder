@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { LoaderCircle } from "lucide-react";
-import { onboardUser } from "./actions";
+import { onboardUser, checkUserInfo } from "./actions";
 
 import { createClient } from "@/utils/supabase/client";
 
@@ -25,20 +25,17 @@ export default function Onboarding() {
   const [broadcast, setBroadcast] = useState({}); //{status: "success|error", "message":"message"}
 
   useEffect(() => {
-    supabase.auth.getUser().then((res) => {
-      const {
-        data: { user },
-        error,
-      } = res;
-
-      try {
+    console.log("checking");
+    checkUserInfo()
+      .then((user) => {
+        console.log(user);
         if (user.user_metadata.first_name && user.user_metadata.last_name) {
           router.push("/dashboard/home");
         }
-      } catch (err) {
+      })
+      .catch((err) => {
         console.log(err);
-      }
-    });
+      });
   });
 
   const handleOnboard = (formData) => {
@@ -81,7 +78,7 @@ export default function Onboarding() {
                     setIsLoading(true);
                     setTimeout(() => setAllowInput(false), 50);
                   }}
-                  className="ml-auto w-24"
+                  className="ml-auto w-36"
                 >
                   {isLoading ? (
                     <LoaderCircle width={20} className="animate-spin" />
