@@ -35,7 +35,7 @@ export default function Onboarding() {
       .catch((err) => {
         console.log(err);
       });
-  });
+  }, []);
 
   const handleOnboard = (formData) => {
     onboardUser(formData).then((errorCode) => {

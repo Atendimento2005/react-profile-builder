@@ -43,7 +43,7 @@ export default function Login() {
       .catch((err) => {
         console.log(err);
       });
-  });
+  }, []);
 
   const [otpSent, setOtpSent] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
