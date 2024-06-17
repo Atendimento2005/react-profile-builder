@@ -28,7 +28,6 @@ export default function Onboarding() {
     console.log("checking");
     checkUserInfo()
       .then((user) => {
-        console.log(user);
         if (user.user_metadata.first_name && user.user_metadata.last_name) {
           router.push("/dashboard/home");
         }

@@ -30,19 +30,15 @@ export async function verifyOTP(formData) {
     type: "sms",
   };
 
-  console.log(userData);
-
   const {
     data: { session },
     error,
   } = await supabase.auth.verifyOtp(userData);
 
   if (error) {
-    console.log(error.code);
     return error.code;
   }
 
-  console.log(session);
   revalidatePath("/onboarding", "page");
   redirect("/onboarding");
 }

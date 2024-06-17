@@ -31,10 +31,11 @@ export default function Login() {
           data: { user },
         } = res;
         if (user) {
-          console.log("redirecting...");
           if (user.user_metadata.first_name && user.user_metadata.last_name) {
+            console.log("redirecting to home...");
             router.push("/dashboard/home");
           } else {
+            console.log("redirecting to onboarding...");
             router.push("/onboarding");
           }
         }
