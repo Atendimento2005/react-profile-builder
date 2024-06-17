@@ -12,17 +12,27 @@ import { Button } from "@/components/ui/button";
 import { onboardUser } from "./actions";
 
 import { createClient } from "@/utils/supabase/client";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 export default function Onboarding() {
   const supabase = createClient();
+  const router = useRouter();
 
-  supabase.auth.getUser().then((res) => {
-    const {
-      data: { user },
-      error,
-    } = res;
+  useEffect(() => {
+    supabase.auth.getUser().then((res) => {
+      const {
+        data: { user },
+        error,
+      } = res;
 
-    console.log(user);
+      try {
+        if (user.user_metadata.first_name && user.user_metadata.last_name) {
+          router.push("/dashboard/home");
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    });
   });
 
   return (

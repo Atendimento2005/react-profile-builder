@@ -12,7 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-import { sendOTP, verifyOTP, redirectHome } from "./actions";
+import { sendOTP, verifyOTP } from "./actions";
 import { useState, useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
 
@@ -31,9 +31,7 @@ export default function Login() {
           data: { user },
         } = res;
         if (user) {
-          // redirectHome();
           console.log("redirecting...");
-          // redirect("/dashboard/home");
           router.push("/dashboard/home");
         }
       })
