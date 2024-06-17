@@ -9,14 +9,20 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { LoaderCircle } from "lucide-react";
 import { onboardUser } from "./actions";
 
 import { createClient } from "@/utils/supabase/client";
+
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 export default function Onboarding() {
   const supabase = createClient();
   const router = useRouter();
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [allowInput, setAllowInput] = useState(true);
+  const [broadcast, setBroadcast] = useState({}); //{status: "success|error", "message":"message"}
 
   useEffect(() => {
     supabase.auth.getUser().then((res) => {
@@ -34,6 +40,18 @@ export default function Onboarding() {
       }
     });
   });
+
+  const handleOnboard = (formData) => {
+    onboardUser(formData).then((errorCode) => {
+      setIsLoading(false);
+      setAllowInput(true);
+      if (errorCode) {
+        setBroadcast({ status: "error", message: errorCode });
+      } else {
+        setBroadcast({});
+      }
+    });
+  };
 
   return (
     <div className="min-h-screen w-full container flex flex-row items-center justify-center">
@@ -56,10 +74,31 @@ export default function Onboarding() {
                 <Input name="l_name" id="l_name"></Input>
               </div>
               <div className="flex">
-                <Button formAction={onboardUser} className="ml-auto">
-                  Update Details
+                <Button
+                  formAction={handleOnboard}
+                  disabled={!allowInput}
+                  onClick={() => {
+                    setIsLoading(true);
+                    setTimeout(() => setAllowInput(false), 50);
+                  }}
+                  className="ml-auto w-24"
+                >
+                  {isLoading ? (
+                    <LoaderCircle width={20} className="animate-spin" />
+                  ) : (
+                    "Update details"
+                  )}
                 </Button>
               </div>
+              {broadcast ? (
+                <p
+                  className={"text-sm ".concat(
+                    broadcast.status === "error" ? "text-red-600" : null,
+                  )}
+                >
+                  {broadcast.message}
+                </p>
+              ) : null}
             </div>
           </form>
         </CardContent>

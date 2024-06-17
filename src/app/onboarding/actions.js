@@ -15,8 +15,8 @@ export async function onboardUser(formData) {
   });
 
   if (error) {
-    console.log("Error on update user");
-    redirect("/error");
+    console.log(error.code);
+    return error.code;
   }
 
   if (data) {
