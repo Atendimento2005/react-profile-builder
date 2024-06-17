@@ -19,5 +19,7 @@ export async function onboardUser(formData) {
     redirect("/error");
   }
 
-  console.log(data);
+  if (data) {
+    redirect("/dashboard/home");
+  }
 }

@@ -5,7 +5,11 @@ import { redirect } from "next/navigation";
 
 import { createClient } from "@/utils/supabase/server";
 
-export async function login(formData) {
+export async function redirectHome() {
+  redirect("/dashboard/home");
+}
+
+export async function sendOTP(formData) {
   const supabase = createClient();
 
   const userData = {
@@ -15,8 +19,8 @@ export async function login(formData) {
   const { data, error } = await supabase.auth.signInWithOtp(userData);
 
   if (error) {
-    console.log("Error in login");
-    redirect("error");
+    console.log(error.code);
+    return error.code;
   }
 
   console.log(data);
@@ -38,10 +42,11 @@ export async function verifyOTP(formData) {
   } = await supabase.auth.verifyOtp(userData);
 
   if (error) {
-    console.log("Error in OTP");
-    redirect("/error");
+    console.log(error.code);
+    return error.code;
   }
 
   console.log(session);
+  revalidatePath("/onboarding", "page");
   redirect("/onboarding");
 }

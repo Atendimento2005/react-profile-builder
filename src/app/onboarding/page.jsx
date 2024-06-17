@@ -1,3 +1,4 @@
+"use client";
 import {
   Card,
   CardContent,
@@ -10,20 +11,20 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { onboardUser } from "./actions";
 
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/utils/supabase/client";
 import { redirect } from "next/navigation";
-export default async function Onboarding() {
+export default function Onboarding() {
   const supabase = createClient();
 
-  const { data, error } = await supabase.auth.getUser();
-  if (error || !data.user) {
-    redirect("/login");
-  }
+  supabase.auth.getUser().then((res) => {
+    const {
+      data: { user },
+      error,
+    } = res;
 
-  console.log("Test");
-  if (data.user.user_metadata.first_name && data.user.user_metadata.last_name) {
-    redirect("/dashboard/home");
-  }
+    console.log(user);
+  });
+
   return (
     <div className="min-h-screen w-full container flex flex-row items-center justify-center">
       <Card>

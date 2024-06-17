@@ -11,26 +11,20 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-
-import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
 
 export default async function Dashboard() {
-  // const supabase = createClient();
-  //
-  // const { data, error } = await supabase.auth.getUser();
-  //
-  // console.log(data);
-  //
-  // if (error || !data.user) {
-  //   redirect("/login");
-  // }
+  const supabase = createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser().then(console.log("fetched user data!"));
 
   return (
     <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
       <div className="flex items-center pb-5">
         <h1 className="text-2xl font-bold md:text-3xl">
-          Welcome, <span className="text-red-500">manka</span>
+          Welcome,{" "}
+          <span className="text-red-500">{user.user_metadata.first_name}</span>
         </h1>
       </div>
       <div className="flex flex-col w-full items-center md:flex-row">
