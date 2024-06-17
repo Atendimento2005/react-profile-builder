@@ -5,10 +5,6 @@ import { redirect } from "next/navigation";
 
 import { createClient } from "@/utils/supabase/server";
 
-export async function redirectHome() {
-  redirect("/dashboard/home");
-}
-
 export async function sendOTP(formData) {
   const supabase = createClient();
 
