@@ -44,7 +44,10 @@ export default function Onboarding() {
       if (errorCode) {
         setBroadcast({ status: "error", message: errorCode });
       } else {
-        setBroadcast({});
+        setBroadcast({
+          status: "success",
+          message: "Updated sucessfully! Redirecting...",
+        });
       }
     });
   };

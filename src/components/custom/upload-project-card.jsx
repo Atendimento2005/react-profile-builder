@@ -14,6 +14,7 @@ export default function UploadProjectCard() {
       })}
     >
       <CardContent className="h-full flex flex-col items-center justify-center">
+        <input {...getInputProps()} />
         <Upload bg-cover className="text-muted-foreground text-xs" />
         <h2 className="mt-2 text-muted-foreground">Click here to upload</h2>
         <p className="text-xs text-muted-foreground">
