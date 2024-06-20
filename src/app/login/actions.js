@@ -39,6 +39,6 @@ export async function verifyOTP(formData) {
     return error.code;
   }
 
-  revalidatePath("/onboarding", "page");
+  revalidatePath("/", "layout");
   redirect("/onboarding");
 }

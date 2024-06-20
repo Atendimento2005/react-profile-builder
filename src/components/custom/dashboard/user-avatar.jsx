@@ -50,7 +50,9 @@ export default function UserAvatar({ uid, url }) {
   const { inputFiles, getRootProps, getInputProps } = useDropzone({
     accept: { "image/png": [], "image/jpeg": [] },
     onDropAccepted: (files) => {
+      // Open the editor modal
       setOpen(true);
+      // Update the image variable for the editor
       setImage({ file: files[0], url: URL.createObjectURL(files[0]) });
     },
   });
@@ -78,8 +80,6 @@ export default function UserAvatar({ uid, url }) {
           canvas.width = image.width;
 
           ctx.drawImage(image, 0, 0);
-
-          const imageData = ctx.getImageData(0, 0, image.height, image.width);
 
           const croppedCanvas = document.createElement("canvas");
           const croppedCtx = croppedCanvas.getContext("2d");
@@ -155,12 +155,13 @@ export default function UserAvatar({ uid, url }) {
     <>
       <div
         {...getRootProps({
-          className: "dropzone",
+          className:
+            "dropzone rounded-full overflow-hidden aspect-square min-w-fit my-5 md:mx-5 lg:mx-10 outline outline-red-500 outline-3",
         })}
       >
         <input {...getInputProps()} />
         {avatarUrl ? (
-          <div className="h-52 md:h-56 lg:h-64 aspect-square rounded-full my-5 md:mx-5 lg:mx-10 outline outline-red-500 outline-3">
+          <div className="h-52 md:h-56 lg:h-64 aspect-square rounded-full">
             <NextImage
               width={208}
               height={208}
@@ -170,7 +171,7 @@ export default function UserAvatar({ uid, url }) {
             ></NextImage>
           </div>
         ) : (
-          <Skeleton className="h-52 md:h-56 lg:h-64 aspect-square rounded-full my-5 md:mx-5 lg:mx-10 outline outline-red-500 outline-3"></Skeleton>
+          <Skeleton className="h-52 md:h-56 lg:h-64 aspect-square rounded-full"></Skeleton>
         )}
       </div>
       <Dialog open={open} onOpenChange={setOpen}>

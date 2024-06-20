@@ -35,21 +35,24 @@ export default function Onboarding() {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [router]);
 
   const handleOnboard = (formData) => {
-    onboardUser(formData).then((errorCode) => {
-      setIsLoading(false);
-      setAllowInput(true);
-      if (errorCode) {
-        setBroadcast({ status: "error", message: errorCode });
-      } else {
+    onboardUser(formData)
+      .then(() => {
         setBroadcast({
           status: "success",
           message: "Updated sucessfully! Redirecting...",
         });
-      }
-    });
+        router.push("/dashboard/home");
+      })
+      .catch((errorCode) => {
+        setBroadcast({ status: "error", message: errorCode });
+      })
+      .finally(() => {
+        setIsLoading(false);
+        setAllowInput(true);
+      });
   };
 
   return (

@@ -1,20 +1,3 @@
-import Link from "next/link";
-import {
-  Bell,
-  CircleUser,
-  Home,
-  LineChart,
-  Menu,
-  Package,
-  Package2,
-  Search,
-  ShoppingCart,
-  Users,
-  Folder,
-  Award,
-  Eye,
-} from "lucide-react";
-
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -23,21 +6,30 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import UploadProjectCard from "@/components/custom/upload-project-card";
+import { createClient } from "@/utils/supabase/server";
+import ProjectGallery from "@/components/custom/project-gallery";
 
-export default function Dashboard() {
+export default async function Dashboard() {
+  const supabase = createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser().catch((err) => {
+    console.log(err);
+  });
+
+  // Implement new client component for displaying loaded media from db
+
+  // const { data, error, status } = await supabase
+  //   .from("profiles")
+  //   .select("avatar_url")
+  //   .eq("id", user?.id)
+  //   .single();
+
+  // if (error) {
+  //   console.log(error);
+  //   console.log("status code", status);
+  // }
   return (
     <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
       <div className="flex flex-col space-y-4 items-center justify-start">
@@ -50,7 +42,7 @@ export default function Dashboard() {
             </CardDescription>
           </CardHeader>
           <CardContent className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 items-center justify-center">
-            <UploadProjectCard></UploadProjectCard>
+            <ProjectGallery uid={user.id}></ProjectGallery>
           </CardContent>
         </Card>
         <Button className="bg-red-500">Update Profile</Button>

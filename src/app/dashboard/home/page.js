@@ -45,7 +45,7 @@ export default async function Dashboard() {
         </h1>
       </div>
       <div className="flex flex-col w-full items-center md:flex-row">
-        <UserAvatar uid={user?.id} url={data.avatar_url}></UserAvatar>
+        <UserAvatar uid={user?.id} url={data?.avatar_url}></UserAvatar>
         <Card className="w-full h-72">
           <CardHeader>
             <CardTitle className="text-red-500">Cover Image</CardTitle>
