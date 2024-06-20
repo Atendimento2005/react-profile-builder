@@ -18,18 +18,6 @@ export default async function Dashboard() {
     console.log(err);
   });
 
-  // Implement new client component for displaying loaded media from db
-
-  // const { data, error, status } = await supabase
-  //   .from("profiles")
-  //   .select("avatar_url")
-  //   .eq("id", user?.id)
-  //   .single();
-
-  // if (error) {
-  //   console.log(error);
-  //   console.log("status code", status);
-  // }
   return (
     <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
       <div className="flex flex-col space-y-4 items-center justify-start">
