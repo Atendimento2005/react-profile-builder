@@ -30,7 +30,6 @@ export default async function Dashboard() {
             <CertificateGallery uid={user.id}></CertificateGallery>
           </CardContent>
         </Card>
-        <Button className="bg-red-500">Update Profile</Button>
       </div>
     </main>
   );

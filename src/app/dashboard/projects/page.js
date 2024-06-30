@@ -33,7 +33,6 @@ export default async function Dashboard() {
             <ProjectGallery uid={user.id}></ProjectGallery>
           </CardContent>
         </Card>
-        <Button className="bg-red-500">Update Profile</Button>
       </div>
     </main>
   );

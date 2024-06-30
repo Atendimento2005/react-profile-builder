@@ -12,12 +12,9 @@ import { Button } from "@/components/ui/button";
 import { LoaderCircle } from "lucide-react";
 import { onboardUser, checkUserInfo } from "./actions";
 
-import { createClient } from "@/utils/supabase/client";
-
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 export default function Onboarding() {
-  const supabase = createClient();
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(false);
