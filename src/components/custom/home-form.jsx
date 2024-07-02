@@ -27,6 +27,7 @@ import UserAvatar from "@/components/custom/dashboard/user-avatar";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import Image from "next/image";
 import { useState, useEffect } from "react";
 import {z} from "zod";
 
@@ -105,7 +106,10 @@ export default function HomeForm({ data, uid}) {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div></div>
+            <div>
+               <Image alt="banner-img" width={100} height={200} src="/banner.jpg"></Image>
+
+            </div>
           </CardContent>
         </Card>
       </div>

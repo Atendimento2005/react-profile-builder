@@ -38,3 +38,20 @@ export async function fetchTestimonials(uid) {
       });
   });
 }
+
+export async function deleteTestimonial(id) {
+  const supabase = createClient();
+  return new Promise((resolve, reject) => {
+    supabase
+      .from("testimonials")
+      .delete()
+      .eq("id", id)
+      .then(() => {
+        resolve();
+      })
+      .catch((err) => {
+        console.log(err);
+        reject(err);
+      });
+  });
+}

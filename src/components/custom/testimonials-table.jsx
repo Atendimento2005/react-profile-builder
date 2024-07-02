@@ -15,7 +15,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import NewTestimonialForm from "@/components/custom/new-testimonial-form";
+import { deleteTestimonial } from "@/app/dashboard/testimonials/actions";
+import { Trash2 } from "lucide-react";
 import { useState } from "react";
 
 export default function TestimonialsTable({ uid, testimonials}) {
@@ -37,8 +40,9 @@ export default function TestimonialsTable({ uid, testimonials}) {
             <TableHeader>
               <TableRow>
                 <TableHead className="w-[5rem]">Sl No.</TableHead>
-                <TableHead className="w-[250px]">Name</TableHead>
-                <TableHead>Testimonial</TableHead>
+                <TableHead className="w-[8rem]">Name</TableHead>
+                <TableHead >Testimonial</TableHead>
+                <TableHead className="w-[4rem]"></TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -47,6 +51,11 @@ export default function TestimonialsTable({ uid, testimonials}) {
                   <TableCell>{index + 1}</TableCell>
                   <TableCell>{testimonial.testimonial_author}</TableCell>
                   <TableCell>{testimonial.testimonial_content}</TableCell>
+                  <TableCell><Button onClick={() => {
+                    deleteTestimonial(testimonial.id).then(() => {
+                      setTestimonialsList(testimonialsList.filter((t) => t.id !== testimonial.id));
+                    });
+                  }} className="bg-red-500 text-sm aspect-square"><Trash2 className="h-5"/></Button></TableCell>
                 </TableRow>
               ))}
             </TableBody>
