@@ -13,18 +13,21 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { insertNewTestimonial } from "@/app/dashboard/testimonials/actions";
 
-export default function NewTestimonialForm({ uid }) {
+export default function NewTestimonialForm({ uid, updateTestimonials }) {
   const [loading, setLoading] = useState(false);
   const [allowInput, setAllowInput] = useState(true);
   const [open, setOpen] = useState(false);
+  const router = useRouter();
 
   const handleNewTestimonial = (formData) => {
-    insertNewTestimonial(formData, uid).then(() => {
+    insertNewTestimonial(formData, uid).then((data) => {
       setLoading(false);
       setAllowInput(true);
       setOpen(false);
+      updateTestimonials(data);
     });
   };
 

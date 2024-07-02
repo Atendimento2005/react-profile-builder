@@ -12,7 +12,7 @@ export default async function Dashboard() {
 
   const { data, error, status } = await supabase
     .from("profiles")
-    .select("avatar_url, first_name, last_name")
+    .select("avatar_url, first_name, last_name, user_data (*)")
     .eq("id", user?.id)
     .single();
 
