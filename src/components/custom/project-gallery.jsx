@@ -9,7 +9,7 @@ export default function ProjectGallery({ uid }) {
   const [links, setLinks] = useState([]);
   useEffect(() => {
     supabase
-      .from("images")
+      .from("projects")
       .select("path")
       .eq("user_id", uid)
       .then(({ data }) => {
@@ -29,8 +29,8 @@ export default function ProjectGallery({ uid }) {
       .remove([path])
       .then((data) => {
         supabase
-          .from("images")
-          .delete()
+          .from("projects")
+          .delete(path)
           .eq("path", path)
           .then((data) => {
             setLinks(links.filter((link) => !link.endsWith(path)));

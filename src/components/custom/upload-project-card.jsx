@@ -46,7 +46,7 @@ export default function UploadProjectCard({ uid, setLinks }) {
         .upload(filePath, file)
         .then(() => {
           supabase
-            .from("images")
+            .from("projects")
             .insert({
               user_id: uid,
               path: filePath,

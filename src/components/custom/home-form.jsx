@@ -21,17 +21,18 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
+} from "@/components/ui/form";
 
 import UserAvatar from "@/components/custom/dashboard/user-avatar";
+import UploadBannerCard from "@/components/custom/upload-banner-card";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import {z} from "zod";
+import { z } from "zod";
 
-import { updateUserData } from "@/app/dashboard/home/actions";
+import { updateUserData, changeBanner } from "@/app/dashboard/home/actions";
 import { LoaderCircle } from "lucide-react";
 
 const formSchema = z.object({
@@ -40,31 +41,63 @@ const formSchema = z.object({
   experience: z.coerce.number().optional(),
   education: z.string().optional(),
   company: z.string().optional(),
-  "company_desc": z.string().optional(),
-  cities: z.string().optional().transform((value) => value.split(",").map((city) => city.trim())),
-  contact_no: z.string().optional().refine((value) => !value || /^(\+\d{1,3}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/.test(value), {
-    message: "Invalid phone number format",
-  }).transform((value) => value.replace(/\D/g, "")),
+  company_desc: z.string().optional(),
+  cities: z
+    .string()
+    .optional()
+    .transform((value) => value.split(",").map((city) => city.trim())),
+  contact_no: z
+    .string()
+    .optional()
+    .refine(
+      (value) =>
+        !value ||
+        /^(\+\d{1,3}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/.test(value),
+      {
+        message: "Invalid phone number format",
+      }
+    )
+    .transform((value) => value.replace(/\D/g, "")),
   email: z.string().optional(),
-  whatsapp_no: z.string().optional().refine((value) => !value || /^(\+\d{1,3}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/.test(value), {
-    message: "Invalid phone number format",
-  }).transform((value) => value.replace(/\D/g, "")),
-  facebook_url: z.string().optional().refine((value) => !value || /https?:\/\//.test(value), {
-    message: "Invalid URL format",
-  }),
-  instagram_url: z.string().optional().refine((value) => !value || /https?:\/\//.test(value), {
-    message: "Invalid URL format",
-  }),
-  twitter_url: z.string().optional().refine((value) => !value || /https?:\/\//.test(value), {
-    message: "Invalid URL format",
-  }),
-  linkedin_url: z.string().optional().refine((value) => !value || /https?:\/\//.test(value), {
-    message: "Invalid URL format",
-  }),
+  whatsapp_no: z
+    .string()
+    .optional()
+    .refine(
+      (value) =>
+        !value ||
+        /^(\+\d{1,3}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/.test(value),
+      {
+        message: "Invalid phone number format",
+      }
+    )
+    .transform((value) => value.replace(/\D/g, "")),
+  facebook_url: z
+    .string()
+    .optional()
+    .refine((value) => !value || /https?:\/\//.test(value), {
+      message: "Invalid URL format",
+    }),
+  instagram_url: z
+    .string()
+    .optional()
+    .refine((value) => !value || /https?:\/\//.test(value), {
+      message: "Invalid URL format",
+    }),
+  twitter_url: z
+    .string()
+    .optional()
+    .refine((value) => !value || /https?:\/\//.test(value), {
+      message: "Invalid URL format",
+    }),
+  linkedin_url: z
+    .string()
+    .optional()
+    .refine((value) => !value || /https?:\/\//.test(value), {
+      message: "Invalid URL format",
+    }),
 });
 
-export default function HomeForm({ data, uid}) {
-
+export default function HomeForm({ data, uid }) {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -73,32 +106,53 @@ export default function HomeForm({ data, uid}) {
       experience: data?.user_data?.experience ?? "",
       education: data?.user_data?.education ?? "",
       company: data?.user_data?.company ?? "",
-      "company_desc": data?.user_data?.company_desc ?? "",
+      company_desc: data?.user_data?.company_desc ?? "",
       cities: data?.user_data?.cities?.join(", ") ?? [],
-      contact_no: (data?.user_data?.contact_no && data?.user_data?.contact_no !== "") ? "+" + data?.user_data?.contact_no : "",
+      contact_no:
+        data?.user_data?.contact_no && data?.user_data?.contact_no !== ""
+          ? "+" + data?.user_data?.contact_no
+          : "",
       email: data?.user_data?.email ?? "",
-      whatsapp_no: (data?.user_data?.whatsapp_no && data?.user_data?.whatsapp_no !== "") ? "+" + data?.user_data?.whatsapp_no : "",
+      whatsapp_no:
+        data?.user_data?.whatsapp_no && data?.user_data?.whatsapp_no !== ""
+          ? "+" + data?.user_data?.whatsapp_no
+          : "",
       facebook_url: data?.user_data?.facebook_url ?? "",
       instagram_url: data?.user_data?.instagram_url ?? "",
       twitter_url: data?.user_data?.twitter_url ?? "",
-      linkedin_url: data?.user_data?.linkedin_url ?? ""
+      linkedin_url: data?.user_data?.linkedin_url ?? "",
+    },
+  });
 
-    }
-  })
-
-  const {handleSubmit, formState: { isSubmitting }} = form
+  const {
+    handleSubmit,
+    formState: { isSubmitting },
+  } = form;
+  const [loading, setLoading] = useState(false);
+  const [selected, setSelected] = useState(data?.user_data?.banner ?? 0);
 
   const onSubmit = async (values) => {
-    await updateUserData(values).catch(err => {
-      console.log(err)
-    })
-  }
+    await updateUserData(values).catch((err) => {
+      console.log(err);
+    });
+  };
+
+  const updateSelected = async (num) => {
+    if (loading) return;
+    setLoading(true);
+    changeBanner(num)
+      .then(() => {
+        setSelected(num);
+        setLoading(false);
+      })
+      .catch((err) => console.log(err));
+  };
 
   return (
     <>
       <div className="flex flex-col w-full items-center md:flex-row">
         <UserAvatar uid={uid} url={data?.avatar_url}></UserAvatar>
-        <Card className="w-full h-72">
+        <Card className="w-full ">
           <CardHeader>
             <CardTitle className="text-red-500">Cover Image</CardTitle>
             <CardDescription>
@@ -106,15 +160,56 @@ export default function HomeForm({ data, uid}) {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div>
-               <Image alt="banner-img" width={100} height={200} src="/banner.jpg"></Image>
-
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-2 lg:gap-2 place-items-center aspect-[5/2]">
+              <Image
+                alt="banner-img"
+                disabled={loading}
+                onClick={() => updateSelected(1)}
+                width={600}
+                height={1500}
+                src="/banner.jpg"
+                className={
+                  "rounded-md object-cover aspect-[5/2] w-full" +
+                  (selected === 1 ? " outline outline-red-500 outline-3" : "")
+                }
+              ></Image>
+              <Image
+                alt="banner-img"
+                disabled={loading}
+                onClick={() => updateSelected(2)}
+                width={600}
+                height={1500}
+                src="/banner.jpg"
+                className={
+                  "rounded-md object-cover aspect-[5/2] w-full" +
+                  (selected === 2 ? " outline outline-red-500 outline-3" : "")
+                }
+              ></Image>
+              <Image
+                alt="banner-img"
+                disabled={loading}
+                onClick={() => updateSelected(3)}
+                width={600}
+                height={1500}
+                src="/banner.jpg"
+                className={
+                  "rounded-md object-cover aspect-[5/2] w-full" +
+                  (selected === 3 ? " outline outline-red-500 outline-3" : "")
+                }
+              ></Image>
+              <UploadBannerCard
+                selected = {selected}
+                updateSelected={updateSelected}
+              ></UploadBannerCard>
             </div>
           </CardContent>
         </Card>
       </div>
       <Form {...form}>
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col space-y-4 items-center justify-start">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="flex flex-col space-y-4 items-center justify-start"
+        >
           <Card className="w-full">
             <CardHeader>
               <CardTitle className="text-red-500">About Me</CardTitle>
@@ -127,7 +222,7 @@ export default function HomeForm({ data, uid}) {
               <FormField
                 control={form.control}
                 name="bio"
-                render = {({ field }) => (
+                render={({ field }) => (
                   <FormItem>
                     <FormLabel htmlFor="bio">Bio</FormLabel>
                     <FormControl>
@@ -139,15 +234,14 @@ export default function HomeForm({ data, uid}) {
                     </FormControl>
                     <FormMessage></FormMessage>
                   </FormItem>
-              )}/>
+                )}
+              />
               <FormField
                 control={form.control}
                 name="usp"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel htmlFor="usp">
-                      What sets you apart?
-                    </FormLabel>
+                    <FormLabel htmlFor="usp">What sets you apart?</FormLabel>
                     <FormControl>
                       <Textarea
                         id="usp"
@@ -164,7 +258,9 @@ export default function HomeForm({ data, uid}) {
                 name="experience"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel htmlFor="experience">Years of experience</FormLabel>
+                    <FormLabel htmlFor="experience">
+                      Years of experience
+                    </FormLabel>
                     <FormControl>
                       <Input
                         type="number"
@@ -257,8 +353,8 @@ export default function HomeForm({ data, uid}) {
                       ></Textarea>
                     </FormControl>
                     <p className="text-xs text-muted-foreground">
-                      Separate each one with comma.
-                      (e.g., Kolkata, Delhi, Mumbai, ...)
+                      Separate each one with comma. (e.g., Kolkata, Delhi,
+                      Mumbai, ...)
                     </p>
                     <FormMessage></FormMessage>
                   </FormItem>
@@ -269,7 +365,9 @@ export default function HomeForm({ data, uid}) {
           <Card className="w-full">
             <CardHeader>
               <CardTitle className="text-red-500">Contact Details</CardTitle>
-              <CardDescription>Let us know how to get in touch!</CardDescription>
+              <CardDescription>
+                Let us know how to get in touch!
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <FormField
@@ -316,7 +414,9 @@ export default function HomeForm({ data, uid}) {
                 name="facebook_url"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel htmlFor="facebook_url">Facebook Profile</FormLabel>
+                    <FormLabel htmlFor="facebook_url">
+                      Facebook Profile
+                    </FormLabel>
                     <FormControl>
                       <Input type="url" id="facebook_url" {...field}></Input>
                     </FormControl>
@@ -329,7 +429,9 @@ export default function HomeForm({ data, uid}) {
                 name="instagram_url"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel htmlFor="instagram_url">Instagram Profile</FormLabel>
+                    <FormLabel htmlFor="instagram_url">
+                      Instagram Profile
+                    </FormLabel>
                     <FormControl>
                       <Input type="url" id="instagram_url" {...field}></Input>
                     </FormControl>
@@ -355,7 +457,9 @@ export default function HomeForm({ data, uid}) {
                 name="linkedin_url"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel htmlFor="linkedin_url">Linkedin Profile</FormLabel>
+                    <FormLabel htmlFor="linkedin_url">
+                      Linkedin Profile
+                    </FormLabel>
                     <FormControl>
                       <Input id="linkedin_url" {...field}></Input>
                     </FormControl>
@@ -364,11 +468,20 @@ export default function HomeForm({ data, uid}) {
                 )}
               />
             </CardContent>
-          </Card> 
-          <Button className="bg-red-500 w-32" type="submit" disabled={isSubmitting}>{isSubmitting ? (<LoaderCircle className="animate-spin"/>): "Update Profile"}</Button>
+          </Card>
+          <Button
+            className="bg-red-500 w-32"
+            type="submit"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? (
+              <LoaderCircle className="animate-spin" />
+            ) : (
+              "Update Profile"
+            )}
+          </Button>
         </form>
-      </Form >
+      </Form>
     </>
   );
 }
-
